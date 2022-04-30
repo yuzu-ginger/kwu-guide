@@ -2,7 +2,7 @@
 ## Introduction
 京都女子大学非公式LINEbot「京女ガイド」のソースコードです。<br>
 一部共有していないデータがあります。ご了承ください。<br>
-※共有していない部分の場所については各ディレクトリ内にあるREADME.mdファイルに詳しく説明しています。
+※共有していない部分の場所については各ディレクトリ内にあるREADME.mdファイルで詳しく説明しています。
 ## Code
 - [サンプルボット](https://github.com/yuzu-ginger/kwu-guide/tree/main/sample)
 - [京女ガイド(完成形)](https://github.com/yuzu-ginger/kwu-guide/tree/main/kwu_guide_all)
