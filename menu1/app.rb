@@ -51,8 +51,7 @@ def richmenu_url
           "type": "buttons",
           "title": "ウェブページを開きます",
           "text": "選んでください",
-
-          # ポストバックアクション
+        
           "actions": [
               {
                   "type": "uri",
@@ -121,8 +120,7 @@ def richmenu_box
             "type": "buttons",
             "title": "choice",
             "text": "どちらか選んでください",
-  
-            # ポストバックアクション
+          
             "actions": [
                 {
                     "type": "postback",
