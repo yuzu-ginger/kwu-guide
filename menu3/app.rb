@@ -1,6 +1,7 @@
 require 'bundler/setup'
 require 'sinatra'
 require 'line/bot'
+require 'roo'
 
 # test
 get '/' do
