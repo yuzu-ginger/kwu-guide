@@ -32,6 +32,37 @@ post '/callback' do
             when Line::Bot::Event::MessageType::Text     # テキストが入力されたときの処理
               if event.message['text'] =~ /各種証明書/ or event.message['text'] =~ /Q&A/                    
                  client.reply_message(event['replyToken'], richmenu_qa)
+                
+              elsif event.message['text'] == "が"
+                 client.reply_message(event['replyToken'], ques_char("が"))
+              elsif event.message['text'] == "し"
+                 client.reply_message(event['replyToken'], ques_char("し"))
+              elsif event.message['text'] == "け"
+                 client.reply_message(event['replyToken'], ques_char("け"))
+              elsif event.message['text'] == "き"
+                 client.reply_message(event['replyToken'], ques_char("き"))
+              elsif event.message['text'] == "れ"
+                 reply_ques_file(event, "連携推進課")
+              elsif event.message['text'] == "ち"
+                 reply_ques_file(event, "地域連携研究センター")
+              elsif event.message['text'] == "こ"
+                 client.reply_message(event['replyToken'], ques_char("こ"))
+              elsif event.message['text'] == "に"
+                 reply_ques_file(event, "入試広報課")
+              elsif event.message['text'] == "ざ"
+                 reply_ques_file(event, "財務課")
+              elsif event.message['text'] == "と"
+                 reply_ques_file(event, "図書館")
+              elsif event.message['text'] == "お"
+                 reply_ques_file(event, "京都女子大学大阪オフィス")
+              elsif event.message['text'] == "そ"
+                 reply_ques_file(event, "総務課")
+              elsif event.message['text'] == "じ"
+                 reply_ques_file(event, "情報システム課")
+              elsif event.message['text'] == "だ"
+                 reply_ques_file(event, "大学院事務センター")
+              elsif event.message['text'] == "一覧"    # 施設・部署の一覧(売店、食堂以外)
+                 reply_ques_list(event)
               end
             end
          when Line::Bot::Event::Postback           # ボタンが押されたあとの処理(ポストバック)
