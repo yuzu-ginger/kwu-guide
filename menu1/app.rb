@@ -29,9 +29,8 @@ post '/callback' do
         when Line::Bot::Event::Message
             case event.type
             when Line::Bot::Event::MessageType::Text     # テキストが入力されたときの処理
-                if event.message['text'] =~ /京女ポータル/ or event.message['text'] =~ /図書館/
-                    
-                    client.reply_message(event['replyToken'], richmenu_url)
+                if event.message['text'] =~ /京女ポータル/ or event.message['text'] =~ /図書館/     # "京女ポータル"か"図書館"の文字列が含まれていたら          
+                    client.reply_message(event['replyToken'], richmenu_url)                         # 応答メッセージを送信(richmenu_urlメソッドを表示する)
                 end
             end
         end
@@ -48,27 +47,27 @@ def richmenu_url
       "altText": "リッチメニューURL",
 
       "template": {
-          "type": "buttons",
-          "title": "ウェブページを開きます",
-          "text": "選んでください",
+          "type": "buttons",                    # ボタンテンプレートを使用
+          "title": "ウェブページを開きます",     # ボタンのタイトル(表示される)
+          "text": "選んでください",              # ボタンの説明文(表示される)
         
           "actions": [
-              {
-                  "type": "uri",
-                  "label": choice1,
-                  "uri": "{※YOUR_URL※}"
+              {                                 # 1つ目のボタン
+                  "type": "uri",                # urlタイプ
+                  "label": choice1,             # ボタンに表示されるテキスト(choice1="京女ポータル")
+                  "uri": "{※YOUR_URL※}"       # 遷移先のurl, ダブルクォーテーション(")で囲む
               },
-              {
+              {                                 # 2つ目のボタン
                   "type": "uri",
                   "label": choice2,
                   "uri": "{※YOUR_URL※}"
               },
-              {
+              {                                 # 3つ目のボタン
                   "type": "uri",
                   "label": choice3,
                   "uri": "{※YOUR_URL※}"
               },
-              {
+              {                                 # 4つ目のボタン
                   "type": "uri",
                   "label": choice4,
                   "uri": "{※YOUR_URL※}"
