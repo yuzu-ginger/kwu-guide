@@ -289,86 +289,74 @@ def room_build(data)
   }
 end
 
-def reply_room(event, array
+def reply_room(event, array)
+    # p array
     # array = [教室, 曜日, 曜日コード, 何限, 講時コード, 限, 何校舎, 校舎] 
-    xlsx = Roo::Excelx.new("roomdata.xlsx")
-    xlsx_room = Roo::Excelx.new("room_index.xlsx")
     
-    # room_index.xlsxで参照するデータの行(校舎別)
+    # room_index.xlsx(全教室名データ)で参照するデータの行(校舎別)
     case array[6]
     when "A校舎"
         start = 2
         finish = 11
-        file = "a"
     when "C校舎"
         start = 46
         finish = 88
-        file = "c"
     when "E校舎"
         start = 89
         finish = 100
-        file = "e"
     when "F校舎"
         start = 101
         finish = 111
-        file = "f"
     when "J校舎"
         start = 112
         finish = 145
-        file = "j"
     when "S校舎"
         start = 146
         finish = 164
-        file = "s"
     when "U校舎"
         start = 165
         finish = 166
-        file = "u"
     when "Y校舎"
         start = 167
         finish = 188
-        file = "y"
     end
 
-    room = ""
-    index = []
-    index_use = []
-    xlsx = Roo::Excelx.new("room_#{file}.xlsx")
-    
-    # 教室一覧(校舎指定)
+    room = ""         # リプライメッセージ用
+    index = []        # 全教室名(一覧)を入れる配列(校舎指定)
+    index_use = []    # 使用中の教室を入れる配列
+    xlsx_room = Roo::Excelx.new("room_index.xlsx")  # 全教室名データ
+    xlsx = CSV.read("roomdata.csv", headers: true).map(&:to_hash)  # 校舎別使用教室データ★
+
+    # 処理速度計算(start)
+    start_time = Time.now
+
+    # 教室一覧(校舎指定)、読み込む位置を指定することで校舎別にする
     for i in start..finish
         index.push(xlsx_room.cell(i, "A").to_s)
     end
-    puts xlsx.last_row
-        
-    xlsx.last_row.times do |i|
-      for j in 0...index.size
-        semester = xlsx.cell(i, "D").to_s  # 1->前期, 2->後期
-        time = xlsx.cell(i, "G").to_s      # 講時コード(1-6)
-        day = xlsx.cell(i, "B").to_s       # 曜日コード(1-5)
-        use_room = xlsx.cell(i, "L").to_s  # 教室
-        if semester == "1" and day == array[2] and time == array[4]   # 後期:semester=="2"
-            if index[j] == use_room
-                index_use.push("#{index[j]}")
-            end
-        end
-      end
+    
+    use_then = xlsx.find_all {|x| x["開講サイン"] == "1" && x["曜日コード"] == array[2] && x["講時"] == array[4] && x["教室"] =~ /#{array[6].chars.first}/}
+    use_then.each do |x|
+        index_use.push(x["教室"])
     end
 
     index -= index_use   # 教室一覧(index)から使用教室(index_use)消す
 
     # ・A201\nの形にする
-    index.size.times do |x|
-        if x == index.size - 1
-            room += "・#{index[x]}\nです"
+    index.each do |x|
+        if x == index.last
+            room += "・#{x}\nです"
         else
-            room += "・#{index[x]}\n"
+            room += "・#{x}\n"
         end
     end
   
     if index == []
       room = "ありません"
     end
+
+    # 処理速度計算(finish)
+    puts "\e[33m処理 #{Time.now - start_time}s\e[0m"
   
     message = {
       type: "text",
